@@ -1,0 +1,14 @@
+{
+  "name": "Pattern Explorers: The Sound & Shape Jungle",
+  "short_name": "Pattern Explorers",
+  "description": "A gentle pattern-recognition and focus game for children aged 5 to 8.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#FFF8E7",
+  "theme_color": "#2E7D32",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
