@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#2E7D32">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="A gentle pattern-recognition and focus game for children aged 5 to 8.">
+  <title>Pattern Explorers</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- Title -->
+    <section class="screen active" id="screen-title">
+      <div class="title-art" aria-hidden="true">
+        <span class="portal-ring"></span>
+        <span class="mascot bob">🦁</span>
+      </div>
+      <h1 class="logo">Pattern<br>Explorers</h1>
+      <button class="big-btn play-btn" id="btn-start" aria-label="Play">▶</button>
+    </section>
+
+    <!-- Age picker (first launch) -->
+    <section class="screen" id="screen-age">
+      <div class="guide-row">
+        <span class="avatar" data-avatar></span>
+        <div class="bubble">How old are you?</div>
+      </div>
+      <div class="age-grid">
+        <button class="age-btn" data-age="5" aria-label="5 years old">5</button>
+        <button class="age-btn" data-age="6" aria-label="6 years old">6</button>
+        <button class="age-btn" data-age="7" aria-label="7 years old">7</button>
+        <button class="age-btn" data-age="8" aria-label="8 years old">8</button>
+      </div>
+    </section>
+
+    <!-- Progress map -->
+    <section class="screen" id="screen-map">
+      <header class="topbar">
+        <button class="icon-btn" id="btn-avatar" aria-label="My explorer"><span class="avatar small" data-avatar></span></button>
+        <div class="sticker-count" id="sticker-count" aria-hidden="true"></div>
+        <button class="icon-btn" id="btn-stickers" aria-label="Sticker book">📒</button>
+      </header>
+      <div class="map" id="map"></div>
+    </section>
+
+    <!-- Puzzle -->
+    <section class="screen" id="screen-play">
+      <div id="distractors" aria-hidden="true"></div>
+      <div class="layout">
+        <header class="topbar">
+          <button class="icon-btn" id="btn-home" aria-label="Back to map">🗺️</button>
+          <div class="portal-progress" id="portal-progress" aria-label="Portal pieces"></div>
+          <button class="icon-btn" id="btn-replay" aria-label="Look and listen again">👂</button>
+        </header>
+        <div class="guide-row">
+          <span class="avatar guide" data-avatar></span>
+          <div class="bubble" id="bubble" aria-live="polite"></div>
+        </div>
+        <div class="stage" id="stage"></div>
+        <div class="answers" id="answers"></div>
+        <div class="sun-track" id="sun-track" aria-hidden="true"><span class="sun" id="sun">☀️</span></div>
+      </div>
+    </section>
+
+    <!-- Session limit reached -->
+    <section class="screen" id="screen-rest">
+      <div class="rest-art" aria-hidden="true"><span class="moon">🌙</span><span class="sleeper" data-avatar></span><span class="zzz">💤</span></div>
+      <div class="bubble">Great exploring! Time for a rest.</div>
+    </section>
+
+    <div id="fx" aria-hidden="true"></div>
+    <div class="finger" id="finger" aria-hidden="true">👆</div>
+    <button class="parent-leaf" id="parent-leaf" aria-label="Grown-ups: tap three times">🌿</button>
+
+    <!-- Reward -->
+    <div class="overlay" id="ov-reward" role="dialog" aria-label="Well done">
+      <div class="card reward-card">
+        <div class="gem-big" aria-hidden="true">🌟</div>
+        <div class="praise" id="praise"></div>
+        <div class="sticker-win" id="sticker-win"></div>
+        <button class="big-btn next-btn" id="btn-next" aria-label="Next puzzle">▶</button>
+      </div>
+    </div>
+
+    <!-- Zone restored -->
+    <div class="overlay" id="ov-zone" role="dialog" aria-label="Area restored">
+      <div class="card zone-card">
+        <div class="portal-big" aria-hidden="true"><span class="portal-ring spin"></span><span class="portal-emoji" id="zone-emoji"></span></div>
+        <div class="praise" id="zone-title"></div>
+        <div class="unlocks" id="zone-unlocks"></div>
+        <div class="btn-row">
+          <button class="big-btn alt" id="btn-zone-map" aria-label="Back to map">🗺️</button>
+          <button class="big-btn" id="btn-zone-more" aria-label="Keep playing">▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticker book -->
+    <div class="overlay" id="ov-stickers" role="dialog" aria-label="Sticker book">
+      <div class="card">
+        <button class="close-btn" data-close aria-label="Close">✖</button>
+        <div class="card-title" aria-hidden="true">📒</div>
+        <div class="sticker-grid" id="sticker-grid"></div>
+      </div>
+    </div>
+
+    <!-- Avatar -->
+    <div class="overlay" id="ov-avatar" role="dialog" aria-label="My explorer">
+      <div class="card">
+        <button class="close-btn" data-close aria-label="Close">✖</button>
+        <div class="avatar-preview"><span class="avatar huge" data-avatar></span></div>
+        <div class="pick-row" id="pick-animals"></div>
+        <div class="pick-row" id="pick-gear"></div>
+      </div>
+    </div>
+
+    <!-- Parent gate -->
+    <div class="overlay" id="ov-gate" role="dialog" aria-label="Grown-ups only">
+      <div class="card parent">
+        <button class="close-btn" data-close aria-label="Close">✖</button>
+        <h2>Grown-ups only</h2>
+        <p class="gate-q" id="gate-q"></p>
+        <div class="gate-display" id="gate-display"></div>
+        <div class="keypad" id="keypad"></div>
+      </div>
+    </div>
+
+    <!-- Parent dashboard -->
+    <div class="overlay" id="ov-dash" role="dialog" aria-label="Parent dashboard">
+      <div class="card parent dash">
+        <button class="close-btn" data-close aria-label="Close">✖</button>
+        <h2>Parent dashboard</h2>
+        <div id="dash-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/patterns.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
